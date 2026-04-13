@@ -8,18 +8,28 @@ const Authorization = (req, res, next) => {
         const token = bearerToken[1]
         jwt.verify(token, userController.JWTSecret, (error, data) => {
             if (error) {
-                res.status(401).json({error: "Acesso não autorizado. Token inválido."})
+                res.status(401).json({ error: "Acesso não autorizado. Token inválido." })
             } else {
                 req.token = token
                 req.loggedUser = {
                     id: data.id,
-                    email: data.email
+                    email: data.email,
+                    role: data.role
                 }
                 next()
             }
         })
     } else {
-        res.status(401).json({ error: "Acesso não autorizado, você não está autenticado."})
+        res.status(401).json({ error: "Acesso não autorizado, você não está autenticado." })
     }
 }
-export default { Authorization }
+
+const AdminOnly = (req, res, next) => {
+    if (req.loggedUser && req.loggedUser.role === 'ADMIN') {
+        next()
+    } else {
+        res.status(403).json({ error: "Acesso negado. Apenas administradores podem realizar esta ação." })
+    }
+}
+
+export default { Authorization, AdminOnly }

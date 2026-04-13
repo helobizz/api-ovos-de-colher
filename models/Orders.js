@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema({
-    produtoId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
-    },
-    titulo: String,
-    sabor: String,
-    casca: String,
-    tamanho: String,
+    tipo: String,
+    personalizacao: [
+        {
+            casca: {
+                type: String,
+                required: true
+            },
+            recheio: {
+                type: String,
+                required: true
+            }
+        }
+    ],
     precoUnitario: Number,
     quantidade: {
         type: Number,
@@ -19,7 +24,7 @@ const itemSchema = new mongoose.Schema({
 const pagamentoSchema = new mongoose.Schema({
     metodo: {
         type: String,
-        enum: ['PIX', 'CARTAO', 'DINHEIRO']
+        enum: ['pix', 'cartao', 'dinheiro']
     },
     comprovanteUrl: String,
     sinalPago: {

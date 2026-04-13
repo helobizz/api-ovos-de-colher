@@ -3,9 +3,8 @@ const app = express();
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import Product from "./models/Products.js";
+
 import User from "./models/Users.js";
-import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import cors from 'cors'; 
@@ -27,7 +26,6 @@ async function connectDB() {
 }
 
 connectDB();
-app.use("/", productRoutes);
 app.use("/", userRoutes);
 app.use("/", orderRoutes);
 

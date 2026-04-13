@@ -77,7 +77,9 @@ const updateUser = async (req, res) => {
         const id = req.params.id;
         if (ObjectId.isValid(id)) {
             const { name, email, password, whatsapp, role } = req.body;
-            const user = await userService.Update(id, name, email, password, whatsapp, role);
+            const salt = bcrypt.genSaltSync(10);
+            const hash = bcrypt.hashSync(password, salt);
+            const user = await userService.Update(id, name, email, hash, whatsapp, role);
             res.status(200).json({ message: 'Usuário atualizado com sucesso!', user: user });
         } else {
             res.status(400).json({ error: 'Ocorreu um erro na validação da ID.' });
